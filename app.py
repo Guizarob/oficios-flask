@@ -27,10 +27,18 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     
 @app.route('/')
 def inicio():
-    oficios = Oficios.query.order_by(Oficios.id) #Cambio realizado 28/marzo/2026
-    total_oficios = Oficios.query.count()
-    return render_template('index.html', total = total_oficios, datos = oficios)
+    query = request.args.get('q')
 
+    if query:
+        oficios = Oficios.query.filter(
+            Oficios.numero_oficio.ilike(f"%{query}%")
+        ).order_by(Oficios.id).all()
+    else:
+        oficios = Oficios.query.order_by(Oficios.id).all()
+
+    total_oficios = len(oficios)
+
+    return render_template('index.html', datos=oficios, total=total_oficios)
 
 # @app.route('/oficio/<int:id>')
 # def ver_oficio(id):
@@ -75,6 +83,18 @@ def eliminar_oficio(id):
     db.session.delete(oficio)
     db.session.commit()
     return redirect(url_for('inicio'))
+
+@app.route('/buscar-oficio')
+def buscar_oficio():
+    query = request.args.get('q')
+    if query:
+        oficios = Oficios.query.filter(
+            Oficios.numero_oficio.ilike(f"%{query}%")
+        ).all()
+    else:
+        oficios = Oficios.query.all()
+
+    return render_template('index.html', datos = oficios, total = len(oficios))
 
 if __name__ == '__main__':
     app.run(debug=True)
