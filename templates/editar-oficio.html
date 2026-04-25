@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Oficio</title>
+</head>
+<body>
+    <h1> Editar un Oficio</h1>
+    <form method="POST">
+
+        {{ formulario.hidden_tag()}}   // .csrf_token
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.numero_oficio.label }}
+            {{ formulario.numero_oficio(size=60) }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.asunto.label }}
+            {{ formulario.asunto(size=60) }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.remitente.label }}
+            {{ formulario.remitente(size=60) }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.destinatario.label }}
+            {{ formulario.destinatario(size=60) }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.acusado.label }}
+            {{ formulario.acusado() }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.hipervinculo.label }}
+            {{ formulario.hipervinculo(rows=3, cols=60) }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.observaciones.label }}
+            {{ formulario.observaciones(rows=4, cols=60) }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.antecedentes.label }}
+            {{ formulario.antecedentes(rows=4, cols=60) }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.fecha.label }}
+            {{ formulario.fecha(type="date") }}
+        </div>
+
+        <div style="margin-bottom:10px;">
+            {{ formulario.enviar() }}
+            <a href="{{ url_for('inicio') }}">
+            <button type="button">Cancelar</button>
+            </a>
+        </div>
+
+</form>
+
+</body>
+</html>

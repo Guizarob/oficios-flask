@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> Detalle del Oficio </h1>
+    <div>
+        <table  border="1">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Numero de Oficio</th>
+                    <th>Fecha</th>
+                    <th>Acuse</th>
+                    <th>Asunto</th>
+                    <th>Remitente</th>
+                    <th>Destinatario</th>
+                    <th>Hipervinculo</th>
+                    <th>Observaciones</th>
+                    <th>Antecedentes</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for oficio in datos %}
+                    <tr>
+                        <td>{{oficio.id}}</td>
+                        <td> {{oficio.numero_oficio}}</td>
+                        <td>{{ oficio.fecha.strftime('%d/%m/%Y') if oficio.fecha else '' }}</td>
+                        <td>{{ 'Sí' if oficio.acusado else 'No' }}</td>
+                        <td> {{oficio.asunto}} </td>
+                        <td> {{oficio.remitente }} </td>
+                        <td> {{oficio.destinatario }} </td>
+                        <td align="center">
+                        <a href="{{ oficio.hipervinculo }}" target="_blank" rel="noopener noreferrer">Abrir</a>
+                        </td>
+                        <td> {{oficio.observaciones }} </td>
+                        <td> {{oficio.antecedentes }} </td>
+                        <td align="center"> 
+                            <a href="{{ url_for('editar_oficio', id=oficio.id) }}">Editar</a>
+                            <form action="{{ url_for('eliminar_oficio', id=oficio.id) }}" method="POST" style="display:inline;">
+                            <button type="submit">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<!-- 3 horas 15 min -->
+
+    
+</body>
+</html>

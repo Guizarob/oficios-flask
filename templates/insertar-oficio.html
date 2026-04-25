@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertar Oficio</title>
+</head>
+<body>
+
+<h1>Insertar un Oficio</h1>
+
+<form method="POST">
+
+    {{ formulario.hidden_tag() }}
+
+    <div>
+        {{ formulario.numero_oficio.label }}
+        {{ formulario.numero_oficio(size=60) }}
+    </div>
+
+    <div>
+        {{ formulario.asunto.label }}
+        {{ formulario.asunto(size=60) }}
+    </div>
+
+    <div>
+        {{ formulario.remitente.label }}
+        {{ formulario.remitente(size=60) }}
+    </div>
+
+    <div>
+        {{ formulario.destinatario.label }}
+        {{ formulario.destinatario(size=60) }}
+    </div>
+
+    <div>
+        {{ formulario.acusado.label }}
+        {{ formulario.acusado() }}
+    </div>
+
+    <div>
+        {{ formulario.hipervinculo.label }}
+        {{ formulario.hipervinculo(rows=3, cols=60) }}
+    </div>
+
+    <div>
+        {{ formulario.observaciones.label }}
+        {{ formulario.observaciones(rows=4, cols=60) }}
+    </div>
+
+    <div>
+        {{ formulario.antecedentes.label }}
+        {{ formulario.antecedentes(rows=4, cols=60) }}
+    </div>
+
+    <div>
+        {{ formulario.fecha.label }}
+        {{ formulario.fecha(type="date") }}
+    </div>
+
+    <div>
+        {{ formulario.enviar() }}
+
+        <a href="{{ url_for('inicio') }}">
+        <button type="button">Cancelar</button>
+        </a>
+    </div>
+
+</form>
+
+</body>
+</html>
