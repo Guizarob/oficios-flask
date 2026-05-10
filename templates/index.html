@@ -8,10 +8,39 @@
 </head>
 <body>
     <h1>Listado de Oficios</h1>
+<body>
+
+    <div class="container mt-4">
+
+        <h1>Listado de Oficios</h1>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+                        {{ message }}
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
+                        </button>
+
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+
     <div>
         Cantidad de oficios: {{ total }}
     </div>
-    <div>
+    <div class="d-flex gap-2 mb-3">
+
+        <div>
+            <a href="{{ url_for('insertar_oficio')}}" class="btn btn-secondary"> Insertar oficio</a>
+        </div>
+
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buscarModal">
         Buscar oficio
         </button>
@@ -49,22 +78,81 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function limpiarBusqueda() {
+                document.getElementById("inputBusqueda").value = "";
+            }
+        </script>
+
+        <button class="btn btn-info"
+            data-bs-toggle="modal"
+            data-bs-target="#buscarFechaModal">
+
+            Buscar por fecha
+
+        </button>
+
+        <div class="modal fade" id="buscarFechaModal" tabindex="-1">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <form method="GET"
+                        action="{{ url_for('buscar_fecha') }}">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                Buscar por mes y año
+                            </h5>
+
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal">
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <input type="text"
+                                name="fecha"
+                                class="form-control"
+                                placeholder="Ej. mayo 2026">
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button type="submit"
+                                    class="btn btn-success">
+
+                                Buscar
+
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal">
+
+                                Cerrar
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        <a href="{{ url_for('inicio') }}" class="btn btn-secondary">
+            Restaurar
+        </a>
+
     </div>
 
-    <script>
-        function limpiarBusqueda() {
-            document.getElementById("inputBusqueda").value = "";
-        }
-    </script>
-
-    <div>
-        <a href="{{ url_for('insertar_oficio')}}"> Insertar oficio</a>
-    </div>
-
-    <a href="{{ url_for('inicio') }}" class="btn btn-secondary">
-        Restaurar
-    </a>
-    
     <div>
         <table  class="table table-striped table-bordered">
             <thead>

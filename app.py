@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash 
 from models import Oficios
 from databases import db
 from forms import OficioForm
@@ -6,6 +6,9 @@ from flask_migrate import Migrate
 
 from dotenv import load_dotenv
 import os
+
+import datetime
+import calendar
 
 load_dotenv()
 
@@ -24,6 +27,26 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+# ---------------------------------------------------------
+#           MESES 
+
+MESES = {
+    'enero': 1,
+    'febrero': 2,
+    'marzo': 3,
+    'abril': 4,
+    'mayo': 5,
+    'junio': 6,
+    'julio': 7,
+    'agosto': 8,
+    'septiembre': 9,
+    'octubre': 10,
+    'noviembre': 11,
+    'diciembre': 12
+}
+
+#-------------------------------------------------------
     
 @app.route('/')
 def inicio():
@@ -95,6 +118,49 @@ def buscar_oficio():
         oficios = Oficios.query.all()
 
     return render_template('index.html', datos = oficios, total = len(oficios))
+
+@app.route('/buscar-fecha')
+def buscar_fecha():
+
+    query_fecha = request.args.get('fecha')
+
+    if not query_fecha:
+        flash('Debes ingresar una fecha')
+        return redirect(url_for('inicio'))
+
+    try:
+        partes = query_fecha.lower().split()
+
+        if len(partes) != 2:
+            raise ValueError
+
+        mes_texto = partes[0]
+        anio = int(partes[1])
+
+        mes = MESES.get(mes_texto)
+
+        if not mes:
+            raise ValueError
+
+        fecha_inicio = datetime.date(anio, mes, 1)
+
+        ultimo_dia = calendar.monthrange(anio, mes)[1]
+
+        fecha_fin = datetime.date(anio, mes, ultimo_dia)
+
+        oficios = Oficios.query.filter(
+            Oficios.fecha.between(fecha_inicio, fecha_fin)
+        ).all()
+
+        return render_template(
+            'index.html',
+            datos=oficios,
+            total=len(oficios)
+        )
+
+    except:
+        flash('Formato inválido. Usa por ejemplo: mayo 2026')
+        return redirect(url_for('inicio'))
 
 if __name__ == '__main__':
     app.run(debug=True)
